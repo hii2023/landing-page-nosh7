@@ -7,9 +7,7 @@ import { HowItWorks } from "@/components/sections/HowItWorks";
 import { CustomPlans } from "@/components/sections/CustomPlans";
 import { ConditionSpecific } from "@/components/sections/ConditionSpecific";
 import { Testimonials } from "@/components/sections/Testimonials";
-import { PartnerForm } from "@/components/sections/PartnerForm";
 import { Contact } from "@/components/sections/Contact";
-import { WhatsAppFAB } from "@/components/WhatsAppFAB";
 
 export default function Home() {
   return (
@@ -23,11 +21,9 @@ export default function Home() {
         <CustomPlans />
         <ConditionSpecific />
         <Testimonials />
-        <PartnerForm />
         <Contact />
       </main>
       <Footer />
-      <WhatsAppFAB />
     </div>
   );
 }
