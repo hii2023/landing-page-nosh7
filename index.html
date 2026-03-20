@@ -1216,30 +1216,6 @@ async function saveToCRM(name, phone, clinic, area, category, message) {
   }
 }
 
-// ─── Notify Altaf via CallMeBot WhatsApp (silent — visitor sees nothing) ───
-// CALLMEBOT_KEY will be set once Altaf registers at callmebot.com (2 mins)
-const CALLMEBOT_KEY = 'PENDING';   // ← replace with Altaf's CallMeBot API key
-
-async function notifyAltaf(name, clinic, phone, area, category) {
-  if (CALLMEBOT_KEY === 'PENDING') return; // not set up yet
-  const msg = [
-    '🌿 New Partner Enquiry — Nosh7',
-    '👤 ' + name,
-    '🏥 ' + clinic,
-    '📞 ' + phone,
-    '🏷️ ' + (category || 'Unknown'),
-    '📍 ' + (area || 'Not specified'),
-    'Added to CRM ✅'
-  ].join('\n');
-  try {
-    await fetch(
-      'https://api.callmebot.com/whatsapp.php?phone=919712989498&text=' +
-      encodeURIComponent(msg) + '&apikey=' + CALLMEBOT_KEY,
-      { mode: 'no-cors' }
-    );
-  } catch(e) { /* silent */ }
-}
-
 // ─── Collect fields helper ───
 function collectFields(prefix) {
   return {
@@ -1270,7 +1246,6 @@ async function submitPartnerForm(e) {
 
   try {
     await saveToCRM(f.name, f.phone, f.clinic, f.area, f.category, f.message);
-    notifyAltaf(f.name, f.clinic, f.phone, f.area, f.category); // silent bg notify
     showSuccess('pf-success');
     setTimeout(() => {
       e.target.reset();
@@ -1293,7 +1268,6 @@ async function submitModalForm(e) {
 
   try {
     await saveToCRM(f.name, f.phone, f.clinic, f.area, f.category, f.message);
-    notifyAltaf(f.name, f.clinic, f.phone, f.area, f.category); // silent bg notify
     showSuccess('mf-success');
     setTimeout(() => {
       document.getElementById('enqModal').classList.remove('open');
