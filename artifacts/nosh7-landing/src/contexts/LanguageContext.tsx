@@ -640,7 +640,25 @@ const LanguageContext = createContext<LanguageContextType>({
 });
 
 export function LanguageProvider({ children }: { children: ReactNode }) {
-  const [lang, setLang] = useState<Language>("en");
+  const [lang, setLangState] = useState<Language>(() => {
+    try {
+      const stored = localStorage.getItem("nosh7-lang");
+      if (stored && (stored === "en" || stored === "hinglish" || stored === "hi" || stored === "gu")) return stored;
+    } catch {
+      // localStorage unavailable (SSR/private browsing)
+    }
+    return "en";
+  });
+
+  const setLang = (l: Language) => {
+    try {
+      localStorage.setItem("nosh7-lang", l);
+    } catch {
+      // ignore write errors
+    }
+    setLangState(l);
+  };
+
   return (
     <LanguageContext.Provider value={{ lang, setLang, t: translations[lang] }}>
       {children}
