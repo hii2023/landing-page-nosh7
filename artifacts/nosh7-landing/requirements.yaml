@@ -1,0 +1,17 @@
+packages:
+  "framer-motion": "For stunning scroll-triggered animations and micro-interactions"
+  "clsx": "Utility for conditionally joining classNames"
+  "tailwind-merge": "Utility to merge tailwind classes"
+
+images:
+  - path: "artifacts/nosh7-landing/public/images/hero-bg.png"
+    description: "Fresh vibrant Indian vegetarian food ingredients like paneer, fresh spinach, tomatoes, and spices on a warm rustic wooden table, soft focus background, highly professional food photography"
+    aspect_ratio: "16:9"
+  - path: "artifacts/nosh7-landing/public/images/pattern-mesh.png"
+    description: "Abstract soft gradient mesh in pale warm orange and fresh mint green, subtle grain texture, modern professional background"
+    aspect_ratio: "16:9"
+
+notes:
+  - Static frontend-only landing page. No backend API calls required.
+  - Uses framer-motion for scroll reveal animations.
+  - Uses anchor tags for smooth scrolling navigation.

@@ -251,6 +251,26 @@
 
     .fade-in { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
     .fade-in.visible { opacity: 1; transform: none; }
+  
+    /* Logo image */
+    .logo-img { height: 52px; width: auto; display: block; }
+    @media (max-width: 768px) { .logo-img { height: 40px; } }
+
+    /* Language Switcher */
+    .lang-switcher { display: flex; align-items: center; gap: 3px; background: #f0f0ee; border-radius: 10px; padding: 4px; margin-left: 8px; flex-shrink: 0; }
+    .lang-btn { background: none; border: none; padding: 6px 10px; border-radius: 7px; font-weight: 700; font-size: 12px; cursor: pointer; color: #666; transition: all .2s; line-height: 1; }
+    .lang-btn.active { background: white; color: var(--green); box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+    .lang-btn:hover:not(.active) { color: #333; background: rgba(255,255,255,.6); }
+
+    /* WhatsApp Floating Button */
+    .wa-float { position: fixed; bottom: 28px; right: 28px; z-index: 9990; display: flex; align-items: center; }
+    .wa-float-btn { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: #25D366; border-radius: 50%; box-shadow: 0 6px 28px rgba(37,211,102,.45); text-decoration: none; transition: all .3s; position: relative; }
+    .wa-float-btn:hover { transform: scale(1.1); box-shadow: 0 8px 36px rgba(37,211,102,.55); }
+    .wa-float-btn svg { width: 32px; height: 32px; fill: white; }
+    .wa-float-tooltip { position: absolute; right: 70px; background: #1a1a1a; color: white; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 10px; white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,.2); opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .wa-float-tooltip::after { content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right: none; border-left-color: #1a1a1a; }
+    .wa-float:hover .wa-float-tooltip { opacity: 1; }
+    @media (max-width: 480px) { .wa-float { bottom: 18px; right: 18px; } .wa-float-btn { width: 52px; height: 52px; } }
   </style>
 </head>
 <body>
@@ -259,32 +279,36 @@
 <header id="navbar">
   <div class="nav-inner">
     <a href="#" class="logo">
-      <div class="logo-icon">🌿</div>
-      <span class="logo-text">Nosh<span>7</span></span>
+      <img src="attached_assets/nosh7-logo.png" alt="Nosh7 — Eat Healthy, Feel Great" class="logo-img" />
     </a>
     <nav class="nav-links">
-      <a href="#benefits">Benefits</a>
-      <a href="#how-it-works">How It Works</a>
-      <a href="#custom-plans">Custom Plans</a>
-      <a href="#testimonials">Testimonials</a>
+      <a href="#benefits" data-i18n="nav_benefits">Benefits</a>
+      <a href="#how-it-works" data-i18n="nav_how">How It Works</a>
+      <a href="#custom-plans" data-i18n="nav_plans">Custom Plans</a>
+      <a href="#testimonials" data-i18n="nav_testimonials">Testimonials</a>
       <div class="nav-badges">
-        <span class="badge-green">🌱 100% Pure Veg</span>
-        <span class="badge-yellow">⭐ Ahmedabad's #1 Salad Kitchen</span>
+        <span class="badge-green" data-i18n="badge_veg">🌱 100% Pure Veg</span>
+        <span class="badge-yellow" data-i18n="badge_top">⭐ Ahmedabad's #1 Salad Kitchen</span>
       </div>
-      <a href="#contact" class="btn-nav">Partner Now</a>
+      <a href="#contact" class="btn-nav" data-i18n="nav_partner">Partner Now</a>
     </nav>
+    <div class="lang-switcher" id="langSwitcher">
+      <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" id="btn-hi" onclick="setLang('hi')">HI</button>
+      <button class="lang-btn" id="btn-gu" onclick="setLang('gu')">ગુ</button>
+    </div>
     <button class="hamburger" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
   </div>
   <div id="mobile-menu">
-    <a href="#benefits" onclick="closeMobileMenu()">Benefits</a>
-    <a href="#how-it-works" onclick="closeMobileMenu()">How It Works</a>
-    <a href="#custom-plans" onclick="closeMobileMenu()">Custom Plans</a>
-    <a href="#testimonials" onclick="closeMobileMenu()">Testimonials</a>
+    <a href="#benefits" onclick="closeMobileMenu()" data-i18n="nav_benefits">Benefits</a>
+    <a href="#how-it-works" onclick="closeMobileMenu()" data-i18n="nav_how">How It Works</a>
+    <a href="#custom-plans" onclick="closeMobileMenu()" data-i18n="nav_plans">Custom Plans</a>
+    <a href="#testimonials" onclick="closeMobileMenu()" data-i18n="nav_testimonials">Testimonials</a>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <span style="background:#e8f5ee;color:#2d7a4a;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;">🌱 Pure Veg</span>
       <span style="background:#fffbeb;color:#d97706;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;">📍 Satellite, Ahmedabad</span>
     </div>
-    <a href="#contact" class="btn-nav" onclick="closeMobileMenu()">Partner Now</a>
+    <a href="#contact" class="btn-nav" onclick="closeMobileMenu()" data-i18n="nav_partner">Partner Now</a>
   </div>
 </header>
 
@@ -292,12 +316,12 @@
 <section id="hero">
   <div class="hero-deco"></div>
   <div class="container" style="position:relative;z-index:1;">
-    <div class="hero-badge">🥗 Ahmedabad ka #1 Pure Veg Salad Cloud Kitchen</div>
-    <h1 class="hero-h1">Partner With Nosh7 —<br/><span>Fuel Your Clients' Goals</span></h1>
-    <p class="hero-p">Join 2000+ satisfied clients across Ahmedabad. Help your patients actually stick to their meal plans with our fresh, nutritionist-backed, 100% pure-veg salads — customised to their condition.</p>
+    <div class="hero-badge" data-i18n-html="hero_badge">🥗 Ahmedabad ka #1 Pure Veg Salad Cloud Kitchen</div>
+    <h1 class="hero-h1" data-i18n-html="hero_h1">Partner With Nosh7 —<br/><span>Fuel Your Clients' Goals</span></h1>
+    <p class="hero-p" data-i18n="hero_p">Join 2000+ satisfied clients across Ahmedabad. Help your patients actually stick to their meal plans with our fresh, nutritionist-backed, 100% pure-veg salads — customised to their condition.</p>
     <div class="hero-ctas">
-      <a href="#custom-plans" class="btn-primary">Become a Partner →</a>
-      <a href="https://wa.me/919712989498?text=Hi+Team+Nosh7!+I+am+a+nutritionist+and+want+to+partner+with+you." target="_blank" class="btn-outline">💬 Request Free Sample</a>
+      <a href="#custom-plans" class="btn-primary" data-i18n="hero_cta1">Become a Partner →</a>
+      <a href="https://wa.me/919712989498?text=Hi+Team+Nosh7!+I+am+a+nutritionist+and+want+to+partner+with+you." target="_blank" class="btn-outline" data-i18n="hero_cta2">💬 Request Free Sample</a>
     </div>
   </div>
 </section>
@@ -309,22 +333,22 @@
       <div class="stat-card">
         <div class="stat-icon" style="background:#eff6ff;font-size:22px;">👥</div>
         <div class="stat-val">2000+</div>
-        <div class="stat-label">Happy Customers in Ahmedabad</div>
+        <div class="stat-label" data-i18n="stat1">Happy Customers in Ahmedabad</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background:#e8f5ee;font-size:22px;">🌿</div>
         <div class="stat-val">100%</div>
-        <div class="stat-label">Fresh, Never Frozen</div>
+        <div class="stat-label" data-i18n="stat2">Fresh, Never Frozen</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background:#fff4ee;font-size:22px;">🕐</div>
         <div class="stat-val">4 Batches</div>
-        <div class="stat-label">Cooked Fresh Daily</div>
+        <div class="stat-label" data-i18n="stat3">Cooked Fresh Daily</div>
       </div>
       <div class="stat-card">
         <div class="stat-icon" style="background:#fefce8;font-size:22px;">⭐</div>
         <div class="stat-val">4.6 ★</div>
-        <div class="stat-label">Average Customer Rating</div>
+        <div class="stat-label" data-i18n="stat4">Average Customer Rating</div>
       </div>
     </div>
 
@@ -366,8 +390,8 @@
 <section id="benefits">
   <div class="container">
     <div class="section-heading fade-in">
-      <h2>Why Partner With Us?</h2>
-      <p>We solve the biggest roadblock in diet plans: execution. When clients don't have to cook, they actually follow your advice.</p>
+      <h2 data-i18n="benefits_h2">Why Partner With Us?</h2>
+      <p data-i18n="benefits_p">We solve the biggest roadblock in diet plans: execution. When clients don't have to cook, they actually follow your advice.</p>
     </div>
     <div class="compare-table fade-in">
       <div class="compare-col challenge">
@@ -404,8 +428,8 @@
 <section id="quality">
   <div class="container">
     <div class="section-heading fade-in">
-      <h2>Our Quality Promise</h2>
-      <p>Food you can confidently recommend to your most discerning clients. Zero shortcuts, zero preservatives.</p>
+      <h2 data-i18n="quality_h2">Our Quality Promise</h2>
+      <p data-i18n="quality_p">Food you can confidently recommend to your most discerning clients. Zero shortcuts, zero preservatives.</p>
     </div>
     <div class="quality-grid fade-in">
       <div class="quality-card">
@@ -447,8 +471,8 @@
   <div class="container">
     <div class="batches-wrap fade-in">
       <div class="section-heading" style="margin-bottom:40px;">
-        <h2>4 Fresh Delivery Batches</h2>
-        <p>Salads prepared 1 hour before each batch — fresh like home-made. All deliveries within Ahmedabad.</p>
+        <h2 data-i18n="batches_h2">4 Fresh Delivery Batches</h2>
+        <p data-i18n="batches_p">Salads prepared 1 hour before each batch — fresh like home-made. All deliveries within Ahmedabad.</p>
       </div>
       <div class="batches-grid">
         <div class="batch-card">
@@ -484,28 +508,28 @@
 <section id="how-it-works">
   <div class="container">
     <div class="section-heading fade-in">
-      <h2>How The Partnership Works</h2>
-      <p>Four simple steps to better client results and a new revenue stream for your practice.</p>
+      <h2 data-i18n="how_h2">How The Partnership Works</h2>
+      <p data-i18n="how_p">Four simple steps to better client results and a new revenue stream for your practice.</p>
     </div>
     <div class="steps-row fade-in">
       <div class="step">
         <div class="step-circle">👤</div>
-        <div class="step-title">1. Register</div>
+        <div class="step-title" data-i18n="step1_title">1. Register</div>
         <div class="step-desc">Sign up as a partner on WhatsApp — get your unique clinic promo code instantly.</div>
       </div>
       <div class="step">
         <div class="step-circle">📤</div>
-        <div class="step-title">2. Share Code</div>
+        <div class="step-title" data-i18n="step2_title">2. Share Code</div>
         <div class="step-desc">Give the code to clients along with their diet plan. They get 20% off every order.</div>
       </div>
       <div class="step">
         <div class="step-circle">📱</div>
-        <div class="step-title">3. Client Orders</div>
+        <div class="step-title" data-i18n="step3_title">3. Client Orders</div>
         <div class="step-desc">Clients order via WhatsApp or nosh7.com/order — fresh salads delivered to their door daily.</div>
       </div>
       <div class="step">
         <div class="step-circle">💰</div>
-        <div class="step-title">4. Earn Commission</div>
+        <div class="step-title" data-i18n="step4_title">4. Earn Commission</div>
         <div class="step-desc">You automatically earn 10-15% commission on every single meal your clients order.</div>
       </div>
     </div>
@@ -517,7 +541,7 @@
   <div class="container">
     <div class="section-heading fade-in">
       <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#e8f5ee;color:var(--green);border-radius:50px;font-weight:600;font-size:13px;border:1px solid #c8e8d4;margin-bottom:20px;">🎨 Fully Customizable</div>
-      <h2>We Build the Plan <span style="color:var(--green);">You Design</span></h2>
+      <h2 data-i18n-html="plans_h2">We Build the Plan <span style="color:var(--green);">You Design</span></h2>
       <p>No fixed menus. No one-size-fits-all. You prescribe the diet — we cook and deliver it exactly as you envision, every single day.</p>
     </div>
     <div class="custom-grid fade-in">
@@ -566,7 +590,7 @@
   <div class="container">
     <div class="section-heading fade-in">
       <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#fff4ee;color:var(--orange);border-radius:50px;font-weight:600;font-size:13px;border:1px solid #fdd9c0;margin-bottom:20px;">🩺 Dietitian-Recommended</div>
-      <h2>Condition-Specific Diets,<br/><span style="color:var(--green);">Built on Your Prescription</span></h2>
+      <h2 data-i18n-html="conditions_h2">Condition-Specific Diets,<br/><span style="color:var(--green);">Built on Your Prescription</span></h2>
       <p>We follow your clinical recommendations to the letter. Share your patient's condition and dietary guidelines — we prepare meals that align with your treatment protocol.</p>
     </div>
     <div class="condition-grid fade-in">
@@ -658,8 +682,8 @@
 <section id="testimonials">
   <div class="container">
     <div class="section-heading fade-in">
-      <h2>Trusted by Professionals</h2>
-      <p>See what other dietitians and nutritionists say about partnering with us in Ahmedabad.</p>
+      <h2 data-i18n="testimonials_h2">Trusted by Professionals</h2>
+      <p data-i18n="testimonials_p">See what other dietitians and nutritionists say about partnering with us in Ahmedabad.</p>
     </div>
     <div class="testimonials-grid fade-in">
       <div class="testimonial-card">
@@ -718,14 +742,14 @@
 <section id="contact">
   <div class="container">
     <div class="cta-banner fade-in">
-      <h2>Ready to Partner with Nosh7?</h2>
-      <p>Get a free sample salad box delivered to your clinic in Satellite, Ahmedabad. Taste the quality yourself before recommending it to clients. No strings attached.</p>
-      <a href="https://wa.me/919712989498?text=Hi+Team+Nosh7!+I+am+a+nutritionist+and+want+a+free+sample+to+try." target="_blank" class="btn-cta">💬 Request Free Sample on WhatsApp</a>
+      <h2 data-i18n="cta_h2">Ready to Partner with Nosh7?</h2>
+      <p data-i18n="cta_p">Get a free sample salad box delivered to your clinic in Satellite, Ahmedabad. Taste the quality yourself before recommending it to clients. No strings attached.</p>
+      <a href="https://wa.me/919712989498?text=Hi+Team+Nosh7!+I+am+a+nutritionist+and+want+a+free+sample+to+try." target="_blank" class="btn-cta" data-i18n="cta_btn">💬 Request Free Sample on WhatsApp</a>
     </div>
 
     <div class="section-heading fade-in">
-      <h2 style="font-size:30px;">Get in Touch</h2>
-      <p>Our partner success team is ready to help you get started.</p>
+      <h2 style="font-size:30px;" data-i18n="contact_h2">Get in Touch</h2>
+      <p data-i18n="contact_p">Our partner success team is ready to help you get started.</p>
     </div>
 
     <div class="contact-grid fade-in">
@@ -765,8 +789,7 @@
   <div class="container">
     <div class="footer-top">
       <div class="footer-logo">
-        <div class="logo-icon">🌿</div>
-        <span class="footer-logo-text">Nosh<span>7</span></span>
+        <img src="attached_assets/nosh7-logo.png" alt="Nosh7" class="logo-img" style="height:44px;filter:brightness(0) invert(1);" />
       </div>
       <div class="footer-links">
         <a href="#">Home</a>
@@ -813,5 +836,191 @@
   }, { threshold: 0.1 });
   fadeEls.forEach(el => observer.observe(el));
 </script>
+
+<!-- ===== FLOATING WHATSAPP BUTTON ===== -->
+<div class="wa-float" id="waFloat">
+  <div class="wa-float-tooltip" data-i18n="wa_tooltip">Chat with us on WhatsApp</div>
+  <a class="wa-float-btn" href="https://wa.me/919712989498?text=Hi+Team+Nosh7!+I+want+to+know+more+about+the+partner+program." target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+  </a>
+</div>
+
+
+<script>
+// ===== NOSH7 MULTILINGUAL TRANSLATIONS =====
+const translations = {
+  en: {
+    // Nav
+    nav_benefits: 'Benefits',
+    nav_how: 'How It Works',
+    nav_plans: 'Custom Plans',
+    nav_testimonials: 'Testimonials',
+    nav_partner: 'Partner Now',
+    badge_veg: '🌱 100% Pure Veg',
+    badge_top: "⭐ Ahmedabad's #1 Salad Kitchen",
+    // Hero
+    hero_badge: '🥗 Ahmedabad ka #1 Pure Veg Salad Cloud Kitchen',
+    hero_h1: "Partner With Nosh7 —<br/><span>Fuel Your Clients' Goals</span>",
+    hero_p: "Join 2000+ satisfied clients across Ahmedabad. Help your patients actually stick to their meal plans with our fresh, nutritionist-backed, 100% pure-veg salads — customised to their condition.",
+    hero_cta1: 'Become a Partner →',
+    hero_cta2: '💬 Request Free Sample',
+    // Stats
+    stat1: 'Happy Customers in Ahmedabad',
+    stat2: 'Fresh, Never Frozen',
+    stat3: 'Cooked Fresh Daily',
+    stat4: 'Average Customer Rating',
+    // Sections
+    benefits_h2: 'Why Partner With Us?',
+    benefits_p: "We solve the biggest roadblock in diet plans: execution. When clients don't have to cook, they actually follow your advice.",
+    quality_h2: 'Our Quality Promise',
+    quality_p: 'Food you can confidently recommend to your most discerning clients. Zero shortcuts, zero preservatives.',
+    batches_h2: '4 Fresh Delivery Batches',
+    batches_p: 'Salads prepared 1 hour before each batch — fresh like home-made. All deliveries within Ahmedabad.',
+    how_h2: 'How The Partnership Works',
+    how_p: 'Four simple steps to better client results and a new revenue stream for your practice.',
+    step1_title: '1. Register',
+    step2_title: '2. Share Code',
+    step3_title: '3. Client Orders',
+    step4_title: '4. Earn Commission',
+    plans_h2: 'We Build the Plan <span style="color:var(--green);">You Design</span>',
+    conditions_h2: 'Condition-Specific Diets,<br/><span style="color:var(--green);">Built on Your Prescription</span>',
+    testimonials_h2: 'Trusted by Professionals',
+    testimonials_p: 'See what other dietitians and nutritionists say about partnering with us in Ahmedabad.',
+    cta_h2: 'Ready to Partner with Nosh7?',
+    cta_p: 'Get a free sample salad box delivered to your clinic in Satellite, Ahmedabad. Taste the quality yourself before recommending it to clients. No strings attached.',
+    cta_btn: '💬 Request Free Sample on WhatsApp',
+    contact_h2: 'Get in Touch',
+    contact_p: 'Our partner success team is ready to help you get started.',
+    wa_tooltip: 'Chat with us on WhatsApp',
+  },
+
+  hi: {
+    // Nav — Hinglish (Hindi + English in Roman script)
+    nav_benefits: 'Fayde',
+    nav_how: 'Kaise Kaam Karta Hai',
+    nav_plans: 'Custom Plans',
+    nav_testimonials: 'Partner Reviews',
+    nav_partner: 'Abhi Partner Bano',
+    badge_veg: '🌱 100% Pure Veg',
+    badge_top: '⭐ Ahmedabad ka #1 Salad Kitchen',
+    // Hero
+    hero_badge: '🥗 Ahmedabad ka #1 Pure Veg Salad Cloud Kitchen',
+    hero_h1: "Nosh7 ke Saath Partner Bano —<br/><span>Clients ki Goals Achieve Karwao</span>",
+    hero_p: "Ahmedabad mein 2000+ khush clients ke saath judein. Apne patients ko meal plan follow karne mein help karein — fresh, nutritionist-approved, 100% pure-veg salads ke saath, unki condition ke hisab se.",
+    hero_cta1: 'Partner Bano →',
+    hero_cta2: '💬 Free Sample Maangwao',
+    // Stats
+    stat1: 'Ahmedabad mein Khush Customers',
+    stat2: 'Fresh, Kabhi Frozen Nahi',
+    stat3: 'Roz Fresh Pakaya Jata Hai',
+    stat4: 'Average Customer Rating',
+    // Sections
+    benefits_h2: 'Hum Se Partner Kyun Karein?',
+    benefits_p: "Diet plans ki sabse badi problem — execution. Jab clients ko khud nahi banana padta, tab woh aapki advice follow karte hain.",
+    quality_h2: 'Hamare Quality ka Wada',
+    quality_p: 'Aise khane jo aap apne clients ko confident hokar suggest kar sako. Koi shortcuts nahi, koi preservatives nahi.',
+    batches_h2: '4 Fresh Delivery Batches',
+    batches_p: 'Salads har batch se 1 ghante pehle taiyaar hote hain — ghar jaisa fresh. Poore Ahmedabad mein delivery.',
+    how_h2: 'Partnership Kaise Kaam Karti Hai',
+    how_p: 'Chaar simple steps mein better client results aur apni practice ke liye ek naya income stream.',
+    step1_title: '1. Register Karein',
+    step2_title: '2. Code Share Karein',
+    step3_title: '3. Client Order Karta Hai',
+    step4_title: '4. Commission Kamaao',
+    plans_h2: 'Hum Plan Banate Hain <span style="color:var(--green);">Aap Design Karo</span>',
+    conditions_h2: 'Condition-Specific Diets,<br/><span style="color:var(--green);">Aapke Prescription par Based</span>',
+    testimonials_h2: 'Professionals ka Bharosa',
+    testimonials_p: 'Dekho kya kehte hain doosre dietitians aur nutritionists Ahmedabad mein hamare saath partnership ke baare mein.',
+    cta_h2: 'Nosh7 ke Saath Partner Banne ke Liye Taiyaar?',
+    cta_p: 'Apne clinic mein ek free sample salad box mangwaao — Satellite, Ahmedabad. Khud taste karo aur phir clients ko recommend karo. Koi commitment nahi.',
+    cta_btn: '💬 WhatsApp par Free Sample Maangwao',
+    contact_h2: 'Hum Se Baat Karein',
+    contact_p: 'Hamare partner success team aapki help ke liye taiyaar hai.',
+    wa_tooltip: 'WhatsApp par baat karein',
+  },
+
+  gu: {
+    // Nav — Gujarati
+    nav_benefits: 'ફાયદા',
+    nav_how: 'કેવી રીતે કામ કરે',
+    nav_plans: 'Custom Plans',
+    nav_testimonials: 'Partner Reviews',
+    nav_partner: 'Partner બનો',
+    badge_veg: '🌱 100% Pure Veg',
+    badge_top: '⭐ Ahmedabad નું #1 Salad Kitchen',
+    // Hero
+    hero_badge: '🥗 Ahmedabad નું #1 Pure Veg Salad Cloud Kitchen',
+    hero_h1: "Nosh7 સાથે Partner બનો —<br/><span>Clients ના Goals Achieve કરો</span>",
+    hero_p: "Ahmedabad માં 2000+ ખુશ clients સાથે જોડાઓ. તમારા patients ને meal plan follow કરવામાં help કરો — fresh, nutritionist-approved, 100% pure-veg salads સાથે, તેમની condition મુજબ.",
+    hero_cta1: 'Partner બનો →',
+    hero_cta2: '💬 Free Sample મંગાવો',
+    // Stats
+    stat1: 'Ahmedabad માં ખુશ Customers',
+    stat2: 'Fresh, ક્યારેય Frozen નહીં',
+    stat3: 'રોજ Fresh બને છે',
+    stat4: 'સરેરાશ Customer Rating',
+    // Sections
+    benefits_h2: 'અમારી સાથે Partner કેમ બનવું?',
+    benefits_p: "Diet plans ની સૌથી મોટી problem — execution. જ્યારે clients ને જાતે બનાવવું ન પડે, ત્યારે તેઓ તમારી advice follow કરે છે.",
+    quality_h2: 'અમારું Quality નું વચન',
+    quality_p: 'એવું ખાવાનું જે તમે clients ને confident થઈ recommend કરી શકો. કોઈ shortcuts નહીં, કોઈ preservatives નહીં.',
+    batches_h2: '4 Fresh Delivery Batches',
+    batches_p: 'Salads દરેક batch ના 1 કલાક પહેલાં તૈયાર થાય — ઘર જેવો fresh. Ahmedabad ભરમાં delivery.',
+    how_h2: 'Partnership કેવી રીતે કામ કરે',
+    how_p: 'ચાર સરળ steps માં better client results અને practice માટે નવી income.',
+    step1_title: '1. Register કરો',
+    step2_title: '2. Code Share કરો',
+    step3_title: '3. Client Order કરે',
+    step4_title: '4. Commission કમાઓ',
+    plans_h2: 'અમે Plan બનાવીએ <span style="color:var(--green);">તમે Design કરો</span>',
+    conditions_h2: 'Condition-Specific Diets,<br/><span style="color:var(--green);">તમારી Prescription મુજબ</span>',
+    testimonials_h2: 'Professionals નો ભરોસો',
+    testimonials_p: 'જુઓ Ahmedabad ના બીજા dietitians અને nutritionists અમારી partnership વિશે શું કહે છે.',
+    cta_h2: 'Nosh7 સાથે Partner બનવા તૈયાર?',
+    cta_p: 'Satellite, Ahmedabad ની તમારી clinic માં free sample salad box મંગાવો. ખુદ taste કરો, પછી clients ને recommend કરો. કોઈ commitment નહીં.',
+    cta_btn: '💬 WhatsApp પર Free Sample મંગાવો',
+    contact_h2: 'અમારો સંપર્ક કરો',
+    contact_p: 'અમારી partner success team તમને શરૂ કરવામાં help કરવા તૈયાર છે.',
+    wa_tooltip: 'WhatsApp પર chat કરો',
+  }
+};
+
+// Current language
+let currentLang = localStorage.getItem('nosh7-lang') || 'en';
+
+function setLang(lang) {
+  currentLang = lang;
+  // Simple text replacements
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    if (translations[lang] && translations[lang][key] !== undefined) {
+      el.textContent = translations[lang][key];
+    }
+  });
+  // HTML replacements (for elements with embedded spans etc)
+  document.querySelectorAll('[data-i18n-html]').forEach(el => {
+    const key = el.dataset.i18nHtml;
+    if (translations[lang] && translations[lang][key] !== undefined) {
+      el.innerHTML = translations[lang][key];
+    }
+  });
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+  const activeBtn = document.getElementById('btn-' + lang);
+  if (activeBtn) activeBtn.classList.add('active');
+  // Save preference
+  localStorage.setItem('nosh7-lang', lang);
+  // Update html lang attribute
+  document.documentElement.lang = lang;
+}
+
+// Apply saved language on page load (skip if English — already in DOM)
+if (currentLang !== 'en') {
+  setLang(currentLang);
+}
+</script>
+
 </body>
 </html>
