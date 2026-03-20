@@ -292,6 +292,27 @@
     .form-success-text { font-size: 15px; font-weight: 600; color: var(--green); }
     .form-note { font-size: 12px; color: #999; text-align: center; margin-top: 14px; line-height: 1.5; }
     @media (max-width: 600px) { .form-card { padding: 32px 24px; } .form-grid { grid-template-columns: 1fr; } }
+  
+    /* Enquiry Floating Button */
+    .enq-float { position: fixed; bottom: 100px; right: 28px; z-index: 9989; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; }
+    .enq-float-btn { display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: var(--green); border-radius: 50%; box-shadow: 0 6px 28px rgba(45,122,74,.45); border: none; cursor: pointer; transition: all .3s; }
+    .enq-float-btn:hover { background: var(--green-dark); transform: scale(1.1); box-shadow: 0 8px 36px rgba(45,122,74,.55); }
+    .enq-float-btn svg { width: 28px; height: 28px; fill: white; }
+    .enq-float-tooltip { position: absolute; right: 70px; background: #1a1a1a; color: white; font-size: 13px; font-weight: 600; padding: 8px 14px; border-radius: 10px; white-space: nowrap; box-shadow: 0 4px 16px rgba(0,0,0,.2); opacity: 0; pointer-events: none; transition: opacity .25s; }
+    .enq-float-tooltip::after { content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right: none; border-left-color: #1a1a1a; }
+    .enq-float:hover .enq-float-tooltip { opacity: 1; }
+    @media (max-width: 480px) { .enq-float { bottom: 90px; right: 18px; } .enq-float-btn { width: 52px; height: 52px; } }
+
+    /* Enquiry Modal */
+    .enq-modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.55); z-index: 9995; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(3px); }
+    .enq-modal-overlay.open { display: flex; }
+    .enq-modal { background: white; border-radius: 24px; padding: 40px 36px; width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,.2); animation: modalIn .25s ease; }
+    @keyframes modalIn { from { transform: scale(.94) translateY(12px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+    .enq-modal-close { position: absolute; top: 16px; right: 18px; background: #f3f4f6; border: none; border-radius: 50%; width: 32px; height: 32px; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; color: #666; transition: all .2s; }
+    .enq-modal-close:hover { background: #e5e7eb; color: #1a1a1a; }
+    .enq-modal-title { font-size: 22px; font-weight: 800; color: #1a1a1a; margin-bottom: 6px; }
+    .enq-modal-sub { font-size: 14px; color: #666; margin-bottom: 28px; line-height: 1.6; }
+    @media (max-width: 480px) { .enq-modal { padding: 28px 20px; border-radius: 20px; } }
   </style>
 </head>
 <body>
@@ -369,9 +390,9 @@
         <div class="stat-label" data-i18n="stat3">Cooked Fresh Daily</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon" style="background:#fefce8;font-size:22px;">⭐</div>
-        <div class="stat-val">4.6 ★</div>
-        <div class="stat-label" data-i18n="stat4">Average Customer Rating</div>
+        <div class="stat-icon" style="background:#e8f5ee;font-size:22px;">🗓️</div>
+        <div class="stat-val">Since 2023</div>
+        <div class="stat-label" data-i18n="stat4">Serving Ahmedabad with Pride</div>
       </div>
     </div>
 
@@ -790,6 +811,19 @@
             <input class="form-input" type="text" id="pf-area" name="area" placeholder="Satellite, Bopal, Vastrapur..." />
           </div>
           <div class="form-group full">
+            <label class="form-label" for="pf-category" data-i18n="pf_cat_label">Your Profession / Category *</label>
+            <select class="form-input" id="pf-category" name="category" required>
+
+            <option value="">— Select your profession —</option>
+            <option value="Registered Dietitian">Registered Dietitian</option>
+            <option value="Clinical Nutritionist">Clinical Nutritionist</option>
+            <option value="Gym / Fitness Trainer">Gym / Fitness Trainer</option>
+            <option value="Wellness Coach">Wellness Coach</option>
+            <option value="Yoga Studio">Yoga Studio</option>
+            <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
             <label class="form-label" for="pf-message" data-i18n="pf_msg_label">Anything you'd like to share?</label>
             <textarea class="form-textarea" id="pf-message" name="message" placeholder="Tell us about your practice, how many clients you have, or any specific requirements..."></textarea>
           </div>
@@ -874,7 +908,7 @@
     <div class="footer-divider"></div>
     <div class="footer-bottom">
       <span>© <span id="year"></span> Nosh7. All rights reserved.</span>
-      <span>Pure Veg Always 🌱 · Ahmedabad ka #1 Salad Cloud Kitchen</span>
+      <span>Pure Veg Always 🌱 · Est. 2023 · Ahmedabad ka #1 Salad Cloud Kitchen</span>
     </div>
   </div>
 </footer>
@@ -941,7 +975,7 @@ const translations = {
     stat1: 'Happy Customers in Ahmedabad',
     stat2: 'Fresh, Never Frozen',
     stat3: 'Cooked Fresh Daily',
-    stat4: 'Average Customer Rating',
+    stat4: 'Serving Ahmedabad with Pride',
     // Sections
     benefits_h2: 'Why Partner With Us?',
     benefits_p: "We solve the biggest roadblock in diet plans: execution. When clients don't have to cook, they actually follow your advice.",
@@ -976,6 +1010,10 @@ const translations = {
     pf_submit: 'Send Enquiry via WhatsApp',
     pf_success: "WhatsApp opened! Your enquiry has been sent. We'll reply shortly.",
     pf_note: 'Clicking submit opens WhatsApp with your details pre-filled. Just hit Send on WhatsApp to complete your enquiry.',
+    pf_cat_label: 'Your Profession / Category *',
+    modal_title: 'Partner Enquiry',
+    modal_sub: "Fill in your details — we'll get back to you on WhatsApp within the hour.",
+    enq_tooltip: 'Partner Enquiry',
     batches_p: 'Salads prepared 1.5 hours before each batch — fresh like home-made. All deliveries within Ahmedabad.',
   },
 
@@ -999,7 +1037,7 @@ const translations = {
     stat1: 'Ahmedabad mein Khush Customers',
     stat2: 'Fresh, Kabhi Frozen Nahi',
     stat3: 'Roz Fresh Pakaya Jata Hai',
-    stat4: 'Average Customer Rating',
+    stat4: 'Serving Ahmedabad with Pride',
     // Sections
     benefits_h2: 'Hum Se Partner Kyun Karein?',
     benefits_p: "Diet plans ki sabse badi problem — execution. Jab clients ko khud nahi banana padta, tab woh aapki advice follow karte hain.",
@@ -1092,6 +1130,10 @@ const translations = {
     pf_submit: 'WhatsApp પર Enquiry મોકલો',
     pf_success: 'WhatsApp ખૂલ્યું! Enquiry મોકલી દેવાઈ. અમે જલ્દી reply કરીશું.',
     pf_note: 'Submit કરવાથી WhatsApp ખૂલશે. ફક્ત WhatsApp માં Send દબાવો.',
+    pf_cat_label: 'તમારો Profession *',
+    modal_title: 'Partner Enquiry',
+    modal_sub: 'Details ભરો — અમે WhatsApp પર એક કલાકમાં reply કરીશું.',
+    enq_tooltip: 'Partner Enquiry',
     batches_p: 'Salads દરેક batch ના 1.5 કલાક પહેલાં તૈયાર થાય — ઘર જેવો fresh. Ahmedabad ભરમાં delivery.',
   }
 };
@@ -1133,38 +1175,184 @@ if (currentLang !== 'en') {
 
 
 <script>
-function submitPartnerForm(e) {
-  e.preventDefault();
-  const name    = document.getElementById('pf-name').value.trim();
-  const clinic  = document.getElementById('pf-clinic').value.trim();
-  const phone   = document.getElementById('pf-phone').value.trim();
-  const area    = document.getElementById('pf-area').value.trim() || 'Not specified';
-  const message = document.getElementById('pf-message').value.trim() || 'No message';
+// ─── Supabase CRM config (same project as NOSH7 CRM) ───
+const CRM_URL = "https://doesbktbrslcrdhmemhn.supabase.co/rest/v1";
+const CRM_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRvZXNia3RicnNsY3JkaG1lbWhuIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMDY3NTEsImV4cCI6MjA4ODU4Mjc1MX0.cl93JTGAIJI36H68X5WOpZUV8TWea8ItotFwOTQU8NI";
 
-  const text = [
-    '🌿 *New Partner Enquiry — Nosh7 Landing Page*',
+async function saveToCRM(name, phone, clinic, area, category, message) {
+  const today = new Date().toISOString().split('T')[0];
+  const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  const notes = [
+    'Received from Website (partners.nosh7.in)',
+    clinic ? 'Clinic: ' + clinic : '',
+    message ? 'Message: ' + message : ''
+  ].filter(Boolean).join(' | ');
+
+  const lead = {
+    id,
+    name,
+    phone: phone.replace(/[^0-9]/g, '').replace(/^91/, '').slice(-10),
+    area: area || '',
+    category: category || 'Other',
+    notes,
+    status: 'New',
+    created_date: today
+  };
+
+  try {
+    await fetch(CRM_URL + '/leads', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': CRM_KEY,
+        'Authorization': 'Bearer ' + CRM_KEY,
+        'Prefer': 'return=representation'
+      },
+      body: JSON.stringify(lead)
+    });
+  } catch(err) {
+    console.warn('CRM save failed (non-critical):', err);
+  }
+}
+
+function buildWAText(name, clinic, phone, area, category, message) {
+  return [
+    '🌿 *New Partner Enquiry — Nosh7 Website*',
     '',
     '👤 *Name:* ' + name,
     '🏥 *Clinic:* ' + clinic,
     '📞 *Phone:* ' + phone,
-    '📍 *Area:* ' + area,
-    '💬 *Message:* ' + message,
+    '🏷️ *Category:* ' + (category || 'Not specified'),
+    '📍 *Area:* ' + (area || 'Not specified'),
+    '💬 *Message:* ' + (message || 'No message'),
     '',
     '_Sent via partners.nosh7.in_'
   ].join('\n');
+}
 
-  const waUrl = 'https://wa.me/919712989498?text=' + encodeURIComponent(text);
-  window.open(waUrl, '_blank');
+// ─── Page form (full section) ───
+function submitPartnerForm(e) {
+  e.preventDefault();
+  const name     = document.getElementById('pf-name').value.trim();
+  const clinic   = document.getElementById('pf-clinic').value.trim();
+  const phone    = document.getElementById('pf-phone').value.trim();
+  const area     = document.getElementById('pf-area').value.trim();
+  const category = document.getElementById('pf-category').value;
+  const message  = document.getElementById('pf-message').value.trim();
 
-  // Show success message
-  const successEl = document.getElementById('pf-success');
-  successEl.style.display = 'block';
-  successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // 1. Open WhatsApp
+  window.open('https://wa.me/919712989498?text=' + encodeURIComponent(buildWAText(name, clinic, phone, area, category, message)), '_blank');
 
-  // Reset form after 2s
-  setTimeout(() => { e.target.reset(); }, 2000);
+  // 2. Save to CRM
+  saveToCRM(name, phone, clinic, area, category, message);
+
+  // 3. Show success
+  const el = document.getElementById('pf-success');
+  el.style.display = 'block';
+  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  setTimeout(() => { e.target.reset(); el.style.display = 'none'; }, 4000);
+}
+
+// ─── Modal form ───
+function submitModalForm(e) {
+  e.preventDefault();
+  const name     = document.getElementById('mf-name').value.trim();
+  const clinic   = document.getElementById('mf-clinic').value.trim();
+  const phone    = document.getElementById('mf-phone').value.trim();
+  const area     = document.getElementById('mf-area').value.trim();
+  const category = document.getElementById('mf-category').value;
+  const message  = document.getElementById('mf-message').value.trim();
+
+  // 1. Open WhatsApp
+  window.open('https://wa.me/919712989498?text=' + encodeURIComponent(buildWAText(name, clinic, phone, area, category, message)), '_blank');
+
+  // 2. Save to CRM
+  saveToCRM(name, phone, clinic, area, category, message);
+
+  // 3. Show success + close modal after delay
+  const el = document.getElementById('mf-success');
+  el.style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('enqModal').classList.remove('open');
+    document.getElementById('modalEnquiryForm').reset();
+    el.style.display = 'none';
+  }, 3000);
+}
+
+function closeEnqModal(e) {
+  if (e.target === document.getElementById('enqModal')) {
+    document.getElementById('enqModal').classList.remove('open');
+  }
 }
 </script>
+
+
+<!-- ===== ENQUIRY POPUP MODAL ===== -->
+<div class="enq-modal-overlay" id="enqModal" onclick="closeEnqModal(event)">
+  <div class="enq-modal">
+    <button class="enq-modal-close" onclick="document.getElementById('enqModal').classList.remove('open')" aria-label="Close">✕</button>
+    <div class="enq-modal-title" data-i18n="modal_title">Partner Enquiry</div>
+    <div class="enq-modal-sub" data-i18n="modal_sub">Fill in your details — we'll get back to you on WhatsApp within the hour.</div>
+    <form id="modalEnquiryForm" onsubmit="submitModalForm(event)">
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label" for="mf-name" data-i18n="pf_name_label">Full Name *</label>
+          <input class="form-input" type="text" id="mf-name" placeholder="Dr. Priya Mehta" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mf-clinic" data-i18n="pf_clinic_label">Clinic / Practice *</label>
+          <input class="form-input" type="text" id="mf-clinic" placeholder="Wellness Clinic" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mf-phone" data-i18n="pf_phone_label">Phone Number *</label>
+          <input class="form-input" type="tel" id="mf-phone" placeholder="+91 98765 43210" required />
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="mf-area" data-i18n="pf_area_label">Area in Ahmedabad</label>
+          <input class="form-input" type="text" id="mf-area" placeholder="Satellite, Bopal..." />
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="mf-category" data-i18n="pf_cat_label">Your Profession *</label>
+          <select class="form-input" id="mf-category" required>
+            <option value="">— Select your profession —</option>
+            <option value="Registered Dietitian">Registered Dietitian</option>
+            <option value="Clinical Nutritionist">Clinical Nutritionist</option>
+            <option value="Gym / Fitness Trainer">Gym / Fitness Trainer</option>
+            <option value="Wellness Coach">Wellness Coach</option>
+            <option value="Yoga Studio">Yoga Studio</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group full">
+          <label class="form-label" for="mf-message" data-i18n="pf_msg_label">Anything to share?</label>
+          <textarea class="form-textarea" id="mf-message" rows="3" placeholder="Tell us about your practice..."></textarea>
+        </div>
+      </div>
+      <button type="submit" class="form-submit" style="margin-top:16px;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        <span data-i18n="pf_submit">Send Enquiry via WhatsApp</span>
+      </button>
+      <div class="form-success" id="mf-success">
+        <div class="form-success-icon">🎉</div>
+        <div class="form-success-text" data-i18n="pf_success">WhatsApp opened! We'll reply shortly.</div>
+      </div>
+      <p class="form-note" data-i18n="pf_note">Clicking submit opens WhatsApp with your details pre-filled. Just hit Send.</p>
+    </form>
+  </div>
+</div>
+
+<!-- ===== FLOATING ENQUIRY BUTTON ===== -->
+<div class="enq-float" id="enqFloat">
+  <div class="enq-float-tooltip" data-i18n="enq_tooltip">Partner Enquiry</div>
+  <button class="enq-float-btn" onclick="document.getElementById('enqModal').classList.add('open')" aria-label="Open Partner Enquiry Form">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+  </button>
+</div>
 
 </body>
 </html>
