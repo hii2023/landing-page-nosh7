@@ -1,4 +1,4 @@
-import { Leaf } from "lucide-react";
+import logoImg from "/logo.png";
 
 export function Footer() {
   return (
@@ -7,14 +7,12 @@ export function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-8 mb-8">
           
           {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="bg-primary p-2 rounded-xl text-white">
-              <Leaf size={24} strokeWidth={2.5} />
-            </div>
+          <a href="#" className="flex items-center gap-2">
+            <img src={logoImg} alt="Nosh7 Logo" className="h-10 w-10 rounded-full object-cover" />
             <span className="font-display font-bold text-2xl tracking-tight">
               Nosh<span className="text-accent">7</span>
             </span>
-          </div>
+          </a>
 
           {/* Links */}
           <div className="flex flex-wrap justify-center gap-6">
@@ -33,7 +31,7 @@ export function Footer() {
         
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500 text-center">
           <p>© {new Date().getFullYear()} Nosh7. All rights reserved.</p>
-          <p className="flex items-center gap-1">Pure Veg Always <Leaf size={14} className="text-primary" /></p>
+          <p className="flex items-center gap-1">Pure Veg Always 🌱</p>
         </div>
       </div>
     </footer>
