@@ -271,6 +271,27 @@
     .wa-float-tooltip::after { content: ''; position: absolute; right: -6px; top: 50%; transform: translateY(-50%); border: 6px solid transparent; border-right: none; border-left-color: #1a1a1a; }
     .wa-float:hover .wa-float-tooltip { opacity: 1; }
     @media (max-width: 480px) { .wa-float { bottom: 18px; right: 18px; } .wa-float-btn { width: 52px; height: 52px; } }
+  
+    /* Partner Inquiry Form */
+    #partner-form { background: linear-gradient(135deg, #f0faf4 0%, #fafaf8 100%); }
+    .form-card { background: white; border-radius: 28px; padding: 52px 48px; box-shadow: 0 16px 64px rgba(45,122,74,.1); border: 1px solid #e8f5ee; max-width: 700px; margin: 0 auto; }
+    .form-title { font-size: clamp(24px,3.5vw,36px); font-weight: 800; color: #1a1a1a; margin-bottom: 10px; }
+    .form-subtitle { font-size: 16px; color: #666; margin-bottom: 36px; line-height: 1.6; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group.full { grid-column: 1 / -1; }
+    .form-label { font-size: 13px; font-weight: 700; color: #444; text-transform: uppercase; letter-spacing: .5px; }
+    .form-input, .form-textarea { border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 13px 16px; font-size: 15px; font-family: inherit; color: #1a1a1a; background: #fafaf8; transition: all .2s; outline: none; width: 100%; }
+    .form-input:focus, .form-textarea:focus { border-color: var(--green); background: white; box-shadow: 0 0 0 3px rgba(45,122,74,.1); }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-submit { width: 100%; background: var(--green); color: white; border: none; padding: 17px 32px; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .3s; margin-top: 8px; box-shadow: 0 8px 24px rgba(45,122,74,.25); }
+    .form-submit:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(45,122,74,.3); }
+    .form-submit svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
+    .form-success { display: none; background: #e8f5ee; border: 1.5px solid #c8e8d4; border-radius: 14px; padding: 20px 24px; text-align: center; margin-top: 20px; }
+    .form-success-icon { font-size: 32px; margin-bottom: 8px; }
+    .form-success-text { font-size: 15px; font-weight: 600; color: var(--green); }
+    .form-note { font-size: 12px; color: #999; text-align: center; margin-top: 14px; line-height: 1.5; }
+    @media (max-width: 600px) { .form-card { padding: 32px 24px; } .form-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -286,6 +307,7 @@
       <a href="#how-it-works" data-i18n="nav_how">How It Works</a>
       <a href="#custom-plans" data-i18n="nav_plans">Custom Plans</a>
       <a href="#testimonials" data-i18n="nav_testimonials">Testimonials</a>
+      <a href="#partner-form" data-i18n="nav_enquiry">Partner Enquiry</a>
       <div class="nav-badges">
         <span class="badge-green" data-i18n="badge_veg">🌱 100% Pure Veg</span>
         <span class="badge-yellow" data-i18n="badge_top">⭐ Ahmedabad's #1 Salad Kitchen</span>
@@ -304,6 +326,7 @@
     <a href="#how-it-works" onclick="closeMobileMenu()" data-i18n="nav_how">How It Works</a>
     <a href="#custom-plans" onclick="closeMobileMenu()" data-i18n="nav_plans">Custom Plans</a>
     <a href="#testimonials" onclick="closeMobileMenu()" data-i18n="nav_testimonials">Testimonials</a>
+    <a href="#partner-form" onclick="closeMobileMenu()" data-i18n="nav_enquiry">Partner Enquiry</a>
     <div style="display:flex;gap:10px;flex-wrap:wrap;">
       <span style="background:#e8f5ee;color:#2d7a4a;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;">🌱 Pure Veg</span>
       <span style="background:#fffbeb;color:#d97706;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;">📍 Satellite, Ahmedabad</span>
@@ -417,7 +440,7 @@
           <li class="compare-item"><span class="check">✓</span> Nutritionist-calibrated, portion-controlled meals</li>
           <li class="compare-item"><span class="check">✓</span> 100% pure veg · Jain Dairy paneer · No onion-garlic option</li>
           <li class="compare-item"><span class="check">✓</span> Easy WhatsApp ordering — clients order in 30 seconds</li>
-          <li class="compare-item"><span class="check">✓</span> Earn commission + clients get 20% discount</li>
+          <li class="compare-item"><span class="check">✓</span> Earn commission on every client order</li>
         </ul>
       </div>
     </div>
@@ -472,32 +495,32 @@
     <div class="batches-wrap fade-in">
       <div class="section-heading" style="margin-bottom:40px;">
         <h2 data-i18n="batches_h2">4 Fresh Delivery Batches</h2>
-        <p data-i18n="batches_p">Salads prepared 1 hour before each batch — fresh like home-made. All deliveries within Ahmedabad.</p>
+        <p data-i18n="batches_p">Salads prepared 1.5 hours before each batch — fresh like home-made. All deliveries within Ahmedabad.</p>
       </div>
       <div class="batches-grid">
         <div class="batch-card">
           <div class="batch-emoji">🌅</div>
           <div class="batch-label" style="background:#fef3c7;color:#92400e;">Morning Batch</div>
           <div class="batch-time">9:30 AM – 11:30 AM</div>
-          <div class="batch-prep">Prep starts 8:30 AM</div>
+          <div class="batch-prep">Prep starts 8:00 AM</div>
         </div>
         <div class="batch-card">
           <div class="batch-emoji">☀️</div>
           <div class="batch-label" style="background:#ffedd5;color:#9a3412;">Lunch Batch</div>
           <div class="batch-time">11:30 AM – 1:30 PM</div>
-          <div class="batch-prep">Prep starts 10:30 AM</div>
+          <div class="batch-prep">Prep starts 10:00 AM</div>
         </div>
         <div class="batch-card">
           <div class="batch-emoji">🌤️</div>
           <div class="batch-label" style="background:#fce7f3;color:#9d174d;">Evening Batch</div>
           <div class="batch-time">4:30 PM – 6:30 PM</div>
-          <div class="batch-prep">Prep starts 3:30 PM</div>
+          <div class="batch-prep">Prep starts 3:00 PM</div>
         </div>
         <div class="batch-card">
           <div class="batch-emoji">🌙</div>
           <div class="batch-label" style="background:#e0e7ff;color:#3730a3;">Dinner Batch</div>
           <div class="batch-time">6:30 PM – 8:30 PM</div>
-          <div class="batch-prep">Prep starts 5:30 PM</div>
+          <div class="batch-prep">Prep starts 5:00 PM</div>
         </div>
       </div>
     </div>
@@ -520,7 +543,7 @@
       <div class="step">
         <div class="step-circle">📤</div>
         <div class="step-title" data-i18n="step2_title">2. Share Code</div>
-        <div class="step-desc">Give the code to clients along with their diet plan. They get 20% off every order.</div>
+        <div class="step-desc">Give the code to clients along with their diet plan — they can order fresh meals directly via WhatsApp.</div>
       </div>
       <div class="step">
         <div class="step-circle">📱</div>
@@ -738,6 +761,53 @@
   </div>
 </section>
 
+
+<!-- =============== PARTNER INQUIRY FORM =============== -->
+<section id="partner-form">
+  <div class="container">
+    <div class="section-heading fade-in">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#e8f5ee;color:var(--green);border-radius:50px;font-weight:600;font-size:13px;border:1px solid #c8e8d4;margin-bottom:20px;">🤝 Join the Network</div>
+      <h2 data-i18n="pform_h2">Send Us a Partner Enquiry</h2>
+      <p data-i18n="pform_sub">Fill in your details below. The moment you hit submit, your enquiry lands directly in our WhatsApp — we'll get back to you within the hour.</p>
+    </div>
+    <div class="form-card fade-in">
+      <form id="partnerEnquiryForm" onsubmit="submitPartnerForm(event)">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="pf-name" data-i18n="pf_name_label">Full Name *</label>
+            <input class="form-input" type="text" id="pf-name" name="name" placeholder="Dr. Priya Mehta" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pf-clinic" data-i18n="pf_clinic_label">Clinic / Practice Name *</label>
+            <input class="form-input" type="text" id="pf-clinic" name="clinic" placeholder="Wellness Clinic" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pf-phone" data-i18n="pf_phone_label">Phone Number *</label>
+            <input class="form-input" type="tel" id="pf-phone" name="phone" placeholder="+91 98765 43210" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="pf-area" data-i18n="pf_area_label">Area in Ahmedabad</label>
+            <input class="form-input" type="text" id="pf-area" name="area" placeholder="Satellite, Bopal, Vastrapur..." />
+          </div>
+          <div class="form-group full">
+            <label class="form-label" for="pf-message" data-i18n="pf_msg_label">Anything you'd like to share?</label>
+            <textarea class="form-textarea" id="pf-message" name="message" placeholder="Tell us about your practice, how many clients you have, or any specific requirements..."></textarea>
+          </div>
+        </div>
+        <button type="submit" class="form-submit">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+          <span data-i18n="pf_submit">Send Enquiry via WhatsApp</span>
+        </button>
+        <div class="form-success" id="pf-success">
+          <div class="form-success-icon">🎉</div>
+          <div class="form-success-text" data-i18n="pf_success">WhatsApp opened! Your enquiry has been sent. We'll reply shortly.</div>
+        </div>
+        <p class="form-note" data-i18n="pf_note">Clicking submit opens WhatsApp with your details pre-filled. Just hit Send on WhatsApp to complete your enquiry.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
 <!-- =============== CONTACT =============== -->
 <section id="contact">
   <div class="container">
@@ -858,6 +928,7 @@ const translations = {
     nav_plans: 'Custom Plans',
     nav_testimonials: 'Testimonials',
     nav_partner: 'Partner Now',
+    nav_enquiry: 'Partner Enquiry',
     badge_veg: '🌱 100% Pure Veg',
     badge_top: "⭐ Ahmedabad's #1 Salad Kitchen",
     // Hero
@@ -877,7 +948,7 @@ const translations = {
     quality_h2: 'Our Quality Promise',
     quality_p: 'Food you can confidently recommend to your most discerning clients. Zero shortcuts, zero preservatives.',
     batches_h2: '4 Fresh Delivery Batches',
-    batches_p: 'Salads prepared 1 hour before each batch — fresh like home-made. All deliveries within Ahmedabad.',
+    batches_p: 'Salads prepared 1.5 hours before each batch — fresh like home-made. All deliveries within Ahmedabad.',
     how_h2: 'How The Partnership Works',
     how_p: 'Four simple steps to better client results and a new revenue stream for your practice.',
     step1_title: '1. Register',
@@ -894,6 +965,18 @@ const translations = {
     contact_h2: 'Get in Touch',
     contact_p: 'Our partner success team is ready to help you get started.',
     wa_tooltip: 'Chat with us on WhatsApp',
+
+    pform_h2: 'Send Us a Partner Enquiry',
+    pform_sub: "Fill in your details below. The moment you hit submit, your enquiry lands directly in our WhatsApp — we'll get back to you within the hour.",
+    pf_name_label: 'Full Name *',
+    pf_clinic_label: 'Clinic / Practice Name *',
+    pf_phone_label: 'Phone Number *',
+    pf_area_label: 'Area in Ahmedabad',
+    pf_msg_label: "Anything you'd like to share?",
+    pf_submit: 'Send Enquiry via WhatsApp',
+    pf_success: "WhatsApp opened! Your enquiry has been sent. We'll reply shortly.",
+    pf_note: 'Clicking submit opens WhatsApp with your details pre-filled. Just hit Send on WhatsApp to complete your enquiry.',
+    batches_p: 'Salads prepared 1.5 hours before each batch — fresh like home-made. All deliveries within Ahmedabad.',
   },
 
   hi: {
@@ -903,6 +986,7 @@ const translations = {
     nav_plans: 'Custom Plans',
     nav_testimonials: 'Partner Reviews',
     nav_partner: 'Abhi Partner Bano',
+    nav_enquiry: 'Partner Enquiry',
     badge_veg: '🌱 100% Pure Veg',
     badge_top: '⭐ Ahmedabad ka #1 Salad Kitchen',
     // Hero
@@ -939,6 +1023,18 @@ const translations = {
     contact_h2: 'Hum Se Baat Karein',
     contact_p: 'Hamare partner success team aapki help ke liye taiyaar hai.',
     wa_tooltip: 'WhatsApp par baat karein',
+
+    pform_h2: 'Humse Partner Enquiry Bhejein',
+    pform_sub: 'Neeche apni details bharein. Submit karte hi aapki enquiry seedha hamare WhatsApp par aa jaati hai — hum ek ghante mein reply karte hain.',
+    pf_name_label: 'Poora Naam *',
+    pf_clinic_label: 'Clinic / Practice ka Naam *',
+    pf_phone_label: 'Phone Number *',
+    pf_area_label: 'Ahmedabad mein Area',
+    pf_msg_label: 'Kuch aur batana chahte hain?',
+    pf_submit: 'WhatsApp pe Enquiry Bhejein',
+    pf_success: 'WhatsApp khul gaya! Aapki enquiry bhej di gayi hai. Hum jald reply karenge.',
+    pf_note: 'Submit karne par WhatsApp khulega aapki details ke saath. Bas WhatsApp mein Send dabao.',
+    batches_p: 'Salads har batch se 1.5 ghante pehle taiyaar hote hain — ghar jaisa fresh. Poore Ahmedabad mein delivery.',
   },
 
   gu: {
@@ -948,6 +1044,7 @@ const translations = {
     nav_plans: 'Custom Plans',
     nav_testimonials: 'Partner Reviews',
     nav_partner: 'Partner બનો',
+    nav_enquiry: 'Partner Enquiry',
     badge_veg: '🌱 100% Pure Veg',
     badge_top: '⭐ Ahmedabad નું #1 Salad Kitchen',
     // Hero
@@ -984,6 +1081,18 @@ const translations = {
     contact_h2: 'અમારો સંપર્ક કરો',
     contact_p: 'અમારી partner success team તમને શરૂ કરવામાં help કરવા તૈયાર છે.',
     wa_tooltip: 'WhatsApp પર chat કરો',
+
+    pform_h2: 'અમને Partner Enquiry મોકલો',
+    pform_sub: 'નીચે તમારી details ભરો. Submit કરતાં જ enquiry સીધી અમારા WhatsApp પર આવે છે — અમે એક કલાકમાં reply કરીએ છીએ.',
+    pf_name_label: 'પૂરું નામ *',
+    pf_clinic_label: 'Clinic / Practice નું નામ *',
+    pf_phone_label: 'Phone Number *',
+    pf_area_label: 'Ahmedabad માં Area',
+    pf_msg_label: 'કંઈ share કરવું છે?',
+    pf_submit: 'WhatsApp પર Enquiry મોકલો',
+    pf_success: 'WhatsApp ખૂલ્યું! Enquiry મોકલી દેવાઈ. અમે જલ્દી reply કરીશું.',
+    pf_note: 'Submit કરવાથી WhatsApp ખૂલશે. ફક્ત WhatsApp માં Send દબાવો.',
+    batches_p: 'Salads દરેક batch ના 1.5 કલાક પહેલાં તૈયાર થાય — ઘર જેવો fresh. Ahmedabad ભરમાં delivery.',
   }
 };
 
@@ -1019,6 +1128,41 @@ function setLang(lang) {
 // Apply saved language on page load (skip if English — already in DOM)
 if (currentLang !== 'en') {
   setLang(currentLang);
+}
+</script>
+
+
+<script>
+function submitPartnerForm(e) {
+  e.preventDefault();
+  const name    = document.getElementById('pf-name').value.trim();
+  const clinic  = document.getElementById('pf-clinic').value.trim();
+  const phone   = document.getElementById('pf-phone').value.trim();
+  const area    = document.getElementById('pf-area').value.trim() || 'Not specified';
+  const message = document.getElementById('pf-message').value.trim() || 'No message';
+
+  const text = [
+    '🌿 *New Partner Enquiry — Nosh7 Landing Page*',
+    '',
+    '👤 *Name:* ' + name,
+    '🏥 *Clinic:* ' + clinic,
+    '📞 *Phone:* ' + phone,
+    '📍 *Area:* ' + area,
+    '💬 *Message:* ' + message,
+    '',
+    '_Sent via partners.nosh7.in_'
+  ].join('\n');
+
+  const waUrl = 'https://wa.me/919712989498?text=' + encodeURIComponent(text);
+  window.open(waUrl, '_blank');
+
+  // Show success message
+  const successEl = document.getElementById('pf-success');
+  successEl.style.display = 'block';
+  successEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
+  // Reset form after 2s
+  setTimeout(() => { e.target.reset(); }, 2000);
 }
 </script>
 
