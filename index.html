@@ -831,13 +831,13 @@
         </div>
         <button type="submit" class="form-submit">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          <span data-i18n="pf_submit">Send Enquiry via WhatsApp</span>
+          <span data-i18n="pf_submit">Submit Enquiry</span>
         </button>
         <div class="form-success" id="pf-success">
           <div class="form-success-icon">🎉</div>
-          <div class="form-success-text" data-i18n="pf_success">WhatsApp opened! Your enquiry has been sent. We'll reply shortly.</div>
+          <div class="form-success-text" data-i18n="pf_success">Thank you! Your enquiry has been received. We will contact you within the hour. 🙏</div>
         </div>
-        <p class="form-note" data-i18n="pf_note">Clicking submit opens WhatsApp with your details pre-filled. Just hit Send on WhatsApp to complete your enquiry.</p>
+        <p class="form-note" data-i18n="pf_note">Your details will be saved securely and our team will reach out to you on WhatsApp shortly.</p>
       </form>
     </div>
   </div>
@@ -1008,9 +1008,9 @@ const translations = {
     pf_phone_label: 'Phone Number *',
     pf_area_label: 'Area in Ahmedabad',
     pf_msg_label: "Anything you'd like to share?",
-    pf_submit: 'Send Enquiry via WhatsApp',
-    pf_success: "WhatsApp opened! Your enquiry has been sent. We'll reply shortly.",
-    pf_note: 'Clicking submit opens WhatsApp with your details pre-filled. Just hit Send on WhatsApp to complete your enquiry.',
+    pf_submit: 'Submit Enquiry',
+    pf_success: "Thank you! Your enquiry has been received. We will contact you within the hour. 🙏",
+    pf_note: 'Your details will be saved securely and our team will reach out to you on WhatsApp shortly.',
     pf_cat_label: 'Your Profession / Category *',
     modal_title: 'Partner Enquiry',
     modal_sub: "Fill in your details — we'll get back to you on WhatsApp within the hour.",
@@ -1216,68 +1216,95 @@ async function saveToCRM(name, phone, clinic, area, category, message) {
   }
 }
 
-function buildWAText(name, clinic, phone, area, category, message) {
-  return [
-    '🌿 *New Partner Enquiry — Nosh7 Website*',
-    '',
-    '👤 *Name:* ' + name,
-    '🏥 *Clinic:* ' + clinic,
-    '📞 *Phone:* ' + phone,
-    '🏷️ *Category:* ' + (category || 'Not specified'),
-    '📍 *Area:* ' + (area || 'Not specified'),
-    '💬 *Message:* ' + (message || 'No message'),
-    '',
-    '_Sent via partners.nosh7.in_'
+// ─── Notify Altaf via CallMeBot WhatsApp (silent — visitor sees nothing) ───
+// CALLMEBOT_KEY will be set once Altaf registers at callmebot.com (2 mins)
+const CALLMEBOT_KEY = 'PENDING';   // ← replace with Altaf's CallMeBot API key
+
+async function notifyAltaf(name, clinic, phone, area, category) {
+  if (CALLMEBOT_KEY === 'PENDING') return; // not set up yet
+  const msg = [
+    '🌿 New Partner Enquiry — Nosh7',
+    '👤 ' + name,
+    '🏥 ' + clinic,
+    '📞 ' + phone,
+    '🏷️ ' + (category || 'Unknown'),
+    '📍 ' + (area || 'Not specified'),
+    'Added to CRM ✅'
   ].join('\n');
+  try {
+    await fetch(
+      'https://api.callmebot.com/whatsapp.php?phone=919712989498&text=' +
+      encodeURIComponent(msg) + '&apikey=' + CALLMEBOT_KEY,
+      { mode: 'no-cors' }
+    );
+  } catch(e) { /* silent */ }
 }
 
-// ─── Page form (full section) ───
-function submitPartnerForm(e) {
-  e.preventDefault();
-  const name     = document.getElementById('pf-name').value.trim();
-  const clinic   = document.getElementById('pf-clinic').value.trim();
-  const phone    = document.getElementById('pf-phone').value.trim();
-  const area     = document.getElementById('pf-area').value.trim();
-  const category = document.getElementById('pf-category').value;
-  const message  = document.getElementById('pf-message').value.trim();
+// ─── Collect fields helper ───
+function collectFields(prefix) {
+  return {
+    name:     (document.getElementById(prefix + '-name')?.value     || '').trim(),
+    clinic:   (document.getElementById(prefix + '-clinic')?.value   || '').trim(),
+    phone:    (document.getElementById(prefix + '-phone')?.value    || '').trim(),
+    area:     (document.getElementById(prefix + '-area')?.value     || '').trim(),
+    category: (document.getElementById(prefix + '-category')?.value || ''),
+    message:  (document.getElementById(prefix + '-message')?.value  || '').trim(),
+  };
+}
 
-  // 1. Open WhatsApp
-  window.open('https://wa.me/919712989498?text=' + encodeURIComponent(buildWAText(name, clinic, phone, area, category, message)), '_blank');
-
-  // 2. Save to CRM
-  saveToCRM(name, phone, clinic, area, category, message);
-
-  // 3. Show success
-  const el = document.getElementById('pf-success');
+// ─── Show success helper ───
+function showSuccess(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
   el.style.display = 'block';
   el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  setTimeout(() => { e.target.reset(); el.style.display = 'none'; }, 4000);
+}
+
+// ─── Page form (full section on page) ───
+async function submitPartnerForm(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
+
+  const f = collectFields('pf');
+
+  try {
+    await saveToCRM(f.name, f.phone, f.clinic, f.area, f.category, f.message);
+    notifyAltaf(f.name, f.clinic, f.phone, f.area, f.category); // silent bg notify
+    showSuccess('pf-success');
+    setTimeout(() => {
+      e.target.reset();
+      document.getElementById('pf-success').style.display = 'none';
+    }, 5000);
+  } catch(err) {
+    alert('Something went wrong. Please try again or call us directly.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> <span data-i18n="pf_submit">Send Enquiry</span>'; }
+  }
 }
 
 // ─── Modal form ───
-function submitModalForm(e) {
+async function submitModalForm(e) {
   e.preventDefault();
-  const name     = document.getElementById('mf-name').value.trim();
-  const clinic   = document.getElementById('mf-clinic').value.trim();
-  const phone    = document.getElementById('mf-phone').value.trim();
-  const area     = document.getElementById('mf-area').value.trim();
-  const category = document.getElementById('mf-category').value;
-  const message  = document.getElementById('mf-message').value.trim();
+  const btn = e.target.querySelector('button[type="submit"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'Saving…'; }
 
-  // 1. Open WhatsApp
-  window.open('https://wa.me/919712989498?text=' + encodeURIComponent(buildWAText(name, clinic, phone, area, category, message)), '_blank');
+  const f = collectFields('mf');
 
-  // 2. Save to CRM
-  saveToCRM(name, phone, clinic, area, category, message);
-
-  // 3. Show success + close modal after delay
-  const el = document.getElementById('mf-success');
-  el.style.display = 'block';
-  setTimeout(() => {
-    document.getElementById('enqModal').classList.remove('open');
-    document.getElementById('modalEnquiryForm').reset();
-    el.style.display = 'none';
-  }, 3000);
+  try {
+    await saveToCRM(f.name, f.phone, f.clinic, f.area, f.category, f.message);
+    notifyAltaf(f.name, f.clinic, f.phone, f.area, f.category); // silent bg notify
+    showSuccess('mf-success');
+    setTimeout(() => {
+      document.getElementById('enqModal').classList.remove('open');
+      document.getElementById('modalEnquiryForm').reset();
+      document.getElementById('mf-success').style.display = 'none';
+    }, 4000);
+  } catch(err) {
+    alert('Something went wrong. Please try again or call us directly.');
+  } finally {
+    if (btn) { btn.disabled = false; btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> <span data-i18n="pf_submit">Send Enquiry</span>'; }
+  }
 }
 
 function closeEnqModal(e) {
@@ -1331,13 +1358,13 @@ function closeEnqModal(e) {
       </div>
       <button type="submit" class="form-submit" style="margin-top:16px;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        <span data-i18n="pf_submit">Send Enquiry via WhatsApp</span>
+        <span data-i18n="pf_submit">Submit Enquiry</span>
       </button>
       <div class="form-success" id="mf-success">
         <div class="form-success-icon">🎉</div>
-        <div class="form-success-text" data-i18n="pf_success">WhatsApp opened! We'll reply shortly.</div>
+        <div class="form-success-text" data-i18n="pf_success">Thank you! Your enquiry has been received. We will contact you within the hour. 🙏</div>
       </div>
-      <p class="form-note" data-i18n="pf_note">Clicking submit opens WhatsApp with your details pre-filled. Just hit Send.</p>
+      <p class="form-note" data-i18n="pf_note">Your details will be saved and our team will reach out to you shortly.</p>
     </form>
   </div>
 </div>
