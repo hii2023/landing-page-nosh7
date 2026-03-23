@@ -273,7 +273,7 @@
     @media (max-width: 480px) { .wa-float { bottom: 18px; right: 18px; } .wa-float-btn { width: 52px; height: 52px; } }
   
     /* Partner Inquiry Form */
-    #partner-form { background: linear-gradient(135deg, #f0faf4 0%, #fafaf8 100%); }
+    #partner-form { background: linear-gradient(135deg, #f0faf4 0%, #fafaf8 100%); scroll-margin-top: 80px; }
     .form-card { background: white; border-radius: 28px; padding: 52px 48px; box-shadow: 0 16px 64px rgba(45,122,74,.1); border: 1px solid #e8f5ee; max-width: 700px; margin: 0 auto; }
     .form-title { font-size: clamp(24px,3.5vw,36px); font-weight: 800; color: #1a1a1a; margin-bottom: 10px; }
     .form-subtitle { font-size: 16px; color: #666; margin-bottom: 36px; line-height: 1.6; }
@@ -284,8 +284,9 @@
     .form-input, .form-textarea { border: 1.5px solid #e5e7eb; border-radius: 12px; padding: 13px 16px; font-size: 15px; font-family: inherit; color: #1a1a1a; background: #fafaf8; transition: all .2s; outline: none; width: 100%; }
     .form-input:focus, .form-textarea:focus { border-color: var(--green); background: white; box-shadow: 0 0 0 3px rgba(45,122,74,.1); }
     .form-textarea { resize: vertical; min-height: 100px; }
-    .form-submit { width: 100%; background: var(--green); color: white; border: none; padding: 17px 32px; border-radius: 14px; font-size: 17px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: all .3s; margin-top: 8px; box-shadow: 0 8px 24px rgba(45,122,74,.25); }
-    .form-submit:hover { background: var(--green-dark); transform: translateY(-2px); box-shadow: 0 12px 32px rgba(45,122,74,.3); }
+    .form-submit { width: 100%; background: linear-gradient(135deg, #2d7a4a 0%, #1e5c35 100%); color: white; border: none; padding: 18px 32px; border-radius: 14px; font-size: 18px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: all .3s; margin-top: 8px; box-shadow: 0 8px 28px rgba(45,122,74,.35), inset 0 1px 0 rgba(255,255,255,.15); letter-spacing: .3px; }
+    .form-submit:hover { background: linear-gradient(135deg, #1e5c35 0%, #174a2a 100%); transform: translateY(-3px); box-shadow: 0 14px 40px rgba(45,122,74,.45), inset 0 1px 0 rgba(255,255,255,.15); }
+    .form-submit:active { transform: translateY(0); }
     .form-submit svg { width: 22px; height: 22px; fill: white; flex-shrink: 0; }
     .form-success { display: none; background: #e8f5ee; border: 1.5px solid #c8e8d4; border-radius: 14px; padding: 20px 24px; text-align: center; margin-top: 20px; }
     .form-success-icon { font-size: 32px; margin-bottom: 8px; }
@@ -333,7 +334,7 @@
         <span class="badge-green" data-i18n="badge_veg">🌱 100% Pure Veg</span>
         <span class="badge-yellow" data-i18n="badge_top">⭐ Ahmedabad's #1 Salad Kitchen</span>
       </div>
-      <a href="#contact" class="btn-nav" data-i18n="nav_partner">Partner Now</a>
+      <a href="#partner-form" class="btn-nav" data-i18n="nav_partner">Partner Now</a>
     </nav>
     <div class="lang-switcher" id="langSwitcher">
       <button class="lang-btn active" id="btn-en" onclick="setLang('en')">EN</button>
@@ -352,7 +353,7 @@
       <span style="background:#e8f5ee;color:#2d7a4a;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;">🌱 Pure Veg</span>
       <span style="background:#fffbeb;color:#d97706;padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;">📍 Satellite, Ahmedabad</span>
     </div>
-    <a href="#contact" class="btn-nav" onclick="closeMobileMenu()" data-i18n="nav_partner">Partner Now</a>
+    <a href="#partner-form" class="btn-nav" onclick="closeMobileMenu()" data-i18n="nav_partner">Partner Now</a>
   </div>
 </header>
 
@@ -790,7 +791,7 @@
     <div class="section-heading fade-in">
       <div style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:#e8f5ee;color:var(--green);border-radius:50px;font-weight:600;font-size:13px;border:1px solid #c8e8d4;margin-bottom:20px;">🤝 Join the Network</div>
       <h2 data-i18n="pform_h2">Send Us a Partner Enquiry</h2>
-      <p data-i18n="pform_sub">Fill in your details below. The moment you hit submit, your enquiry lands directly in our WhatsApp — we'll get back to you within the hour.</p>
+      <p data-i18n="pform_sub">Fill in your details below. Once submitted, our team will connect with you within 24 hours.</p>
     </div>
     <div class="form-card fade-in">
       <form id="partnerEnquiryForm" onsubmit="submitPartnerForm(event)">
@@ -821,6 +822,9 @@
             <option value="Gym / Fitness Trainer">Gym / Fitness Trainer</option>
             <option value="Wellness Coach">Wellness Coach</option>
             <option value="Yoga Studio">Yoga Studio</option>
+            <option value="Bulk Corporate">Bulk Corporate</option>
+            <option value="Sports Event">Sports Event</option>
+            <option value="School">School</option>
             <option value="Other">Other</option>
             </select>
           </div>
@@ -830,14 +834,14 @@
           </div>
         </div>
         <button type="submit" class="form-submit">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          <span data-i18n="pf_submit">Submit Enquiry</span>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;flex-shrink:0"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          <span data-i18n="pf_submit">Submit Partnership Request</span>
         </button>
         <div class="form-success" id="pf-success">
           <div class="form-success-icon">🎉</div>
-          <div class="form-success-text" data-i18n="pf_success">Thank you! Your enquiry has been received. We will contact you within the hour. 🙏</div>
+          <div class="form-success-text" data-i18n="pf_success">Thank you! Your request has been received. Our team will connect with you within 24 hours. 🙏</div>
         </div>
-        <p class="form-note" data-i18n="pf_note">Your details will be saved securely and our team will reach out to you on WhatsApp shortly.</p>
+        <p class="form-note" data-i18n="pf_note">Your details are saved securely. Our team will connect with you within 24 hours.</p>
       </form>
     </div>
   </div>
@@ -1002,18 +1006,18 @@ const translations = {
     wa_tooltip: 'Chat with us on WhatsApp',
 
     pform_h2: 'Send Us a Partner Enquiry',
-    pform_sub: "Fill in your details below. The moment you hit submit, your enquiry lands directly in our WhatsApp — we'll get back to you within the hour.",
+    pform_sub: "Fill in your details below. Once submitted, our team will connect with you within 24 hours.",
     pf_name_label: 'Full Name *',
     pf_clinic_label: 'Clinic / Practice Name *',
     pf_phone_label: 'Phone Number *',
     pf_area_label: 'Area in Ahmedabad',
     pf_msg_label: "Anything you'd like to share?",
-    pf_submit: 'Submit Enquiry',
-    pf_success: "Thank you! Your enquiry has been received. We will contact you within the hour. 🙏",
-    pf_note: 'Your details will be saved securely and our team will reach out to you on WhatsApp shortly.',
+    pf_submit: 'Submit Partnership Request',
+    pf_success: "Thank you! Your request has been received. Our team will connect with you within 24 hours. 🙏",
+    pf_note: 'Your details are saved securely. Our team will connect with you within 24 hours.',
     pf_cat_label: 'Your Profession / Category *',
     modal_title: 'Partner Enquiry',
-    modal_sub: "Fill in your details — we'll get back to you on WhatsApp within the hour.",
+    modal_sub: "Fill in your details — our team will connect with you within 24 hours.",
     enq_tooltip: 'Partner Enquiry',
     batches_p: 'Salads prepared 1.5 hours before each batch — fresh like home-made. All deliveries within Ahmedabad.',
   },
@@ -1064,15 +1068,15 @@ const translations = {
     wa_tooltip: 'WhatsApp par baat karein',
 
     pform_h2: 'Humse Partner Enquiry Bhejein',
-    pform_sub: 'Neeche apni details bharein. Submit karte hi aapki enquiry seedha hamare WhatsApp par aa jaati hai — hum ek ghante mein reply karte hain.',
+    pform_sub: 'Neeche apni details bharein. Submit karne ke baad, hamare team 24 ghante mein aapse contact karegi.',
     pf_name_label: 'Poora Naam *',
     pf_clinic_label: 'Clinic / Practice ka Naam *',
     pf_phone_label: 'Phone Number *',
     pf_area_label: 'Ahmedabad mein Area',
     pf_msg_label: 'Kuch aur batana chahte hain?',
-    pf_submit: 'WhatsApp pe Enquiry Bhejein',
-    pf_success: 'WhatsApp khul gaya! Aapki enquiry bhej di gayi hai. Hum jald reply karenge.',
-    pf_note: 'Submit karne par WhatsApp khulega aapki details ke saath. Bas WhatsApp mein Send dabao.',
+    pf_submit: 'Partnership Request Submit Karein',
+    pf_success: 'Shukriya! Aapki request receive ho gayi. Hamare team 24 ghante mein aapse connect karegi. 🙏',
+    pf_note: 'Aapki details securely save hain. Hamare team 24 ghante mein aapse connect karegi.',
     batches_p: 'Salads har batch se 1.5 ghante pehle taiyaar hote hain — ghar jaisa fresh. Poore Ahmedabad mein delivery.',
   },
 
@@ -1122,15 +1126,15 @@ const translations = {
     wa_tooltip: 'WhatsApp પર chat કરો',
 
     pform_h2: 'અમને Partner Enquiry મોકલો',
-    pform_sub: 'નીચે તમારી details ભરો. Submit કરતાં જ enquiry સીધી અમારા WhatsApp પર આવે છે — અમે એક કલાકમાં reply કરીએ છીએ.',
+    pform_sub: 'નીચે તમારી details ભરો. Submit કર્યા પછી, અમારી team 24 કલાકમાં તમારી સાથે connect કરશે.',
     pf_name_label: 'પૂરું નામ *',
     pf_clinic_label: 'Clinic / Practice નું નામ *',
     pf_phone_label: 'Phone Number *',
     pf_area_label: 'Ahmedabad માં Area',
     pf_msg_label: 'કંઈ share કરવું છે?',
-    pf_submit: 'WhatsApp પર Enquiry મોકલો',
-    pf_success: 'WhatsApp ખૂલ્યું! Enquiry મોકલી દેવાઈ. અમે જલ્દી reply કરીશું.',
-    pf_note: 'Submit કરવાથી WhatsApp ખૂલશે. ફક્ત WhatsApp માં Send દબાવો.',
+    pf_submit: 'Partnership Request Submit કરો',
+    pf_success: 'આભાર! તમારી request receive થઈ ગઈ. અમારી team 24 કલાકમાં connect કરશે. 🙏',
+    pf_note: 'તમારી details securely save છે. અમારી team 24 કલાકમાં connect કરશે.',
     pf_cat_label: 'તમારો Profession *',
     modal_title: 'Partner Enquiry',
     modal_sub: 'Details ભરો — અમે WhatsApp પર એક કલાકમાં reply કરીશું.',
@@ -1197,7 +1201,8 @@ async function saveToCRM(name, phone, clinic, area, category, message) {
     category: category || 'Other',
     notes,
     status: 'New',
-    created_date: today
+    created_date: today,
+    follow_up_date: today
   };
 
   try {
@@ -1254,7 +1259,7 @@ async function submitPartnerForm(e) {
   } catch(err) {
     alert('Something went wrong. Please try again or call us directly.');
   } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> <span data-i18n="pf_submit">Send Enquiry</span>'; }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;flex-shrink:0"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> <span>Submit Partnership Request</span>'; }
   }
 }
 
@@ -1277,7 +1282,7 @@ async function submitModalForm(e) {
   } catch(err) {
     alert('Something went wrong. Please try again or call us directly.');
   } finally {
-    if (btn) { btn.disabled = false; btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width:22px;height:22px;fill:white;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg> <span data-i18n="pf_submit">Send Enquiry</span>'; }
+    if (btn) { btn.disabled = false; btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;flex-shrink:0"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> <span>Submit Partnership Request</span>'; }
   }
 }
 
@@ -1294,7 +1299,7 @@ function closeEnqModal(e) {
   <div class="enq-modal">
     <button class="enq-modal-close" onclick="document.getElementById('enqModal').classList.remove('open')" aria-label="Close">✕</button>
     <div class="enq-modal-title" data-i18n="modal_title">Partner Enquiry</div>
-    <div class="enq-modal-sub" data-i18n="modal_sub">Fill in your details — we'll get back to you on WhatsApp within the hour.</div>
+    <div class="enq-modal-sub" data-i18n="modal_sub">Fill in your details — our team will connect with you within 24 hours.</div>
     <form id="modalEnquiryForm" onsubmit="submitModalForm(event)">
       <div class="form-grid">
         <div class="form-group">
@@ -1322,6 +1327,9 @@ function closeEnqModal(e) {
             <option value="Gym / Fitness Trainer">Gym / Fitness Trainer</option>
             <option value="Wellness Coach">Wellness Coach</option>
             <option value="Yoga Studio">Yoga Studio</option>
+            <option value="Bulk Corporate">Bulk Corporate</option>
+            <option value="Sports Event">Sports Event</option>
+            <option value="School">School</option>
             <option value="Other">Other</option>
           </select>
         </div>
@@ -1331,14 +1339,14 @@ function closeEnqModal(e) {
         </div>
       </div>
       <button type="submit" class="form-submit" style="margin-top:16px;">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        <span data-i18n="pf_submit">Submit Enquiry</span>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:22px;height:22px;flex-shrink:0"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <span data-i18n="pf_submit">Submit Partnership Request</span>
       </button>
       <div class="form-success" id="mf-success">
         <div class="form-success-icon">🎉</div>
-        <div class="form-success-text" data-i18n="pf_success">Thank you! Your enquiry has been received. We will contact you within the hour. 🙏</div>
+        <div class="form-success-text" data-i18n="pf_success">Thank you! Your request has been received. Our team will connect with you within 24 hours. 🙏</div>
       </div>
-      <p class="form-note" data-i18n="pf_note">Your details will be saved and our team will reach out to you shortly.</p>
+      <p class="form-note" data-i18n="pf_note">Your details are saved securely. Our team will connect with you within 24 hours.</p>
     </form>
   </div>
 </div>
